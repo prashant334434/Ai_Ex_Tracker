@@ -1,0 +1,8 @@
+{
+  "name": "ai-expense-tracker",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && npm run dev",
+    "dev:mobile": "cd mobile && npm start"
+  }
+}

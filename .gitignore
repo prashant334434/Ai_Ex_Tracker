@@ -1,0 +1,76 @@
+# =========================
+# Environment variables
+# =========================
+.env
+.env.*
+backend/.env
+mobile/.env
+
+# =========================
+# Node / Package managers
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Build outputs
+# =========================
+dist/
+build/
+out/
+
+# =========================
+# Expo / React Native
+# =========================
+.expo/
+.expo-shared/
+web-build/
+mobile/web-build/
+
+# Native builds
+android/
+ios/
+
+# Expo local config
+mobile/.expo/
+
+# =========================
+# SQLite database files
+# =========================
+*.db
+*.sqlite
+*.sqlite3
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+
+# =========================
+# Misc
+# =========================
+coverage/
+.tmp/
+.cache/
