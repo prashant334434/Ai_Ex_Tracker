@@ -4,17 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.initializeDatabase = initializeDatabase;
-exports.getDb = getDb;
 exports.createExpense = createExpense;
 exports.getExpenseById = getExpenseById;
 exports.getAllExpenses = getAllExpenses;
 exports.deleteExpense = deleteExpense;
 const better_sqlite3_1 = __importDefault(require("better-sqlite3"));
+const path_1 = __importDefault(require("path"));
 // ---------------------------------------------------------------------------
 // Connection
 // ---------------------------------------------------------------------------
-let db = null;
-const DB_PATH = "expenses.db";
+const DB_PATH = path_1.default.resolve(__dirname, "..", "expenses.db");
+const db = new better_sqlite3_1.default(DB_PATH);
 // Enable WAL mode for better concurrent read performance
 db.pragma("journal_mode = WAL");
 db.pragma("foreign_keys = ON");
@@ -22,23 +22,18 @@ db.pragma("foreign_keys = ON");
 // Initialisation – creates table if missing
 // ---------------------------------------------------------------------------
 function initializeDatabase() {
-    if (db)
-        return;
-    db = new better_sqlite3_1.default(DB_PATH);
-    db.prepare(`
+    db.exec(`
     CREATE TABLE IF NOT EXISTS expenses (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      amount REAL NOT NULL,
-      note TEXT,
-      createdAt TEXT DEFAULT CURRENT_TIMESTAMP
-    )
-  `).run();
-}
-function getDb() {
-    if (!db) {
-        throw new Error("Database not initialized");
-    }
-    return db;
+      id        INTEGER PRIMARY KEY AUTOINCREMENT,
+      amount    REAL    NOT NULL,
+      currency  TEXT    NOT NULL DEFAULT 'INR',
+      category  TEXT    NOT NULL,
+      description TEXT  NOT NULL,
+      merchant  TEXT,
+      original_input TEXT NOT NULL,
+      created_at TEXT   NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
 }
 // ---------------------------------------------------------------------------
 // CRUD helpers

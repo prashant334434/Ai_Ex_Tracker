@@ -1,5 +1,6 @@
-import Database from 'better-sqlite3';
-import path from 'path';
+import type { Database as BetterSqliteDatabase } from "better-sqlite3";
+import Database from "better-sqlite3";
+import path from "path";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -27,12 +28,12 @@ export interface ExpenseInput {
 // ---------------------------------------------------------------------------
 // Connection
 // ---------------------------------------------------------------------------
-const DB_PATH = path.resolve(__dirname, '..', 'expenses.db');
-const db = new Database(DB_PATH);
+const DB_PATH = path.resolve(__dirname, "..", "expenses.db");
+const db: BetterSqliteDatabase = new Database(DB_PATH);
 
 // Enable WAL mode for better concurrent read performance
-db.pragma('journal_mode = WAL');
-db.pragma('foreign_keys = ON');
+db.pragma("journal_mode = WAL");
+db.pragma("foreign_keys = ON");
 
 // ---------------------------------------------------------------------------
 // Initialisation – creates table if missing
@@ -69,7 +70,7 @@ export function createExpense(input: ExpenseInput): Expense {
     input.category,
     input.description,
     input.merchant ?? null,
-    input.original_input
+    input.original_input,
   ) as { lastInsertRowid: number | bigint };
 
   return getExpenseById(Number(result.lastInsertRowid))!;
@@ -77,23 +78,23 @@ export function createExpense(input: ExpenseInput): Expense {
 
 /** Fetch a single expense by primary-key. */
 export function getExpenseById(id: number): Expense | undefined {
-  return db
-    .prepare('SELECT * FROM expenses WHERE id = ?')
-    .get(id) as Expense | undefined;
+  return db.prepare("SELECT * FROM expenses WHERE id = ?").get(id) as
+    | Expense
+    | undefined;
 }
 
 /** Return every expense, newest first. */
 export function getAllExpenses(): Expense[] {
   return db
-    .prepare('SELECT * FROM expenses ORDER BY created_at DESC')
+    .prepare("SELECT * FROM expenses ORDER BY created_at DESC")
     .all() as Expense[];
 }
 
 /** Remove an expense by id.  Returns true when a row was actually deleted. */
 export function deleteExpense(id: number): boolean {
-  const result = db
-    .prepare('DELETE FROM expenses WHERE id = ?')
-    .run(id) as { changes: number };
+  const result = db.prepare("DELETE FROM expenses WHERE id = ?").run(id) as {
+    changes: number;
+  };
 
   return result.changes > 0;
 }
