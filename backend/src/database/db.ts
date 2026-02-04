@@ -1,4 +1,3 @@
-import type { Database as BetterSqliteDatabase } from "better-sqlite3";
 import Database from "better-sqlite3";
 import path from "path";
 
@@ -29,7 +28,8 @@ export interface ExpenseInput {
 // Connection
 // ---------------------------------------------------------------------------
 const DB_PATH = path.resolve(__dirname, "..", "expenses.db");
-const db: BetterSqliteDatabase = new Database(DB_PATH);
+
+const db: Database.Database = new Database(DB_PATH);
 
 // Enable WAL mode for better concurrent read performance
 db.pragma("journal_mode = WAL");

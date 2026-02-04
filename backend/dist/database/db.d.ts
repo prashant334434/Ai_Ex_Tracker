@@ -1,4 +1,4 @@
-import type { Database as BetterSqliteDatabase } from "better-sqlite3";
+import Database from "better-sqlite3";
 export interface Expense {
     id: number;
     amount: number;
@@ -17,7 +17,7 @@ export interface ExpenseInput {
     merchant: string | null;
     original_input: string;
 }
-declare const db: BetterSqliteDatabase;
+declare const db: Database.Database;
 export declare function initializeDatabase(): void;
 /** Insert a new expense and return it with the generated id + created_at. */
 export declare function createExpense(input: ExpenseInput): Expense;
